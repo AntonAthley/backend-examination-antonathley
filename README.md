@@ -1,2 +1,94 @@
-# backend-examination-antonathley
-Swing Notes Api - Backend examination for Chas Academy
+# Swing Notes API
+
+## Overview
+
+This project is the backend API for the "Swing Notes" application, developed as part of a backend examination for Chas Academy.
+
+## Features
+
+- User Authentication: Secure signup and login with JWT (JSON Web Tokens).
+- User Management: Ability to delete user accounts.
+- Database Integration: PostgreSQL database for data persistence.
+- Error Handling: Centralized error handling for consistent API responses.
+- API Documentation: Integrated Swagger UI for interactive API exploration.
+
+## Technologies Used
+
+- Node.js
+- Express.js
+- PostgreSQL (via `pg` library)
+- bcryptjs (for password hashing)
+- jsonwebtoken (for JWT authentication)
+- Joi (for request body validation)
+- dotenv (for environment variable management)
+- cors (for Cross-Origin Resource Sharing)
+- swagger-ui-express & swagger-jsdoc (for API documentation)
+
+## Installation
+
+Follow these steps to set up and run the project locally.
+
+### Prerequisites
+
+- Node.js (v14 or higher)
+- PostgreSQL database
+
+### Steps
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/AntonAthley/backend-examination-antonathley.git
+    cd backend-examination-antonathley
+    ```
+
+2.  **Install dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+3.  **Set up environment variables:**
+    Create a `.env` file in the root directory of the project with the following variables:
+
+    ```env
+    PORT=5000
+    DATABASE_URL="postgresql://user:password@host:port/database_name"
+    JWT_SECRET="your_jwt_secret_key"
+    JWT_LIFETIME="1h"
+    ```
+
+    - `PORT`: The port on which the server will run (e.g., `5000`).
+    - `DATABASE_URL`: Your PostgreSQL connection string. Example: `postgresql://user:password@localhost:5432/swingnotes_db`.
+    - `JWT_SECRET`: A strong, random string used to sign JWTs. Generate a long, complex string.
+    - `JWT_LIFETIME`: The duration for which the JWT will be valid (e.g., `1h`, `7d`).
+
+4.  **Database Setup:**
+    Ensure your PostgreSQL database is running and create the necessary tables. You might need to manually create the `users` table, for example:
+
+    ```sql
+    CREATE TABLE users (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        username VARCHAR(50) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );
+    ```
+
+5.  **Run the application:**
+    ```bash
+    npm start
+    ```
+    The API will be running at `http://localhost:5000` (or your specified PORT).
+
+## API Endpoints
+
+The API documentation can be accessed via Swagger UI at `http://localhost:5000/api-docs` once the server is running. It provides detailed information on all available endpoints, request/response schemas, and allows you to test the API directly.
+
+Key endpoints include:
+
+- `/api/user/signup` (POST): Register a new user.
+- `/api/user/login` (POST): Log in an existing user and get a JWT.
+- `/api/user/delete` (DELETE): Delete the authenticated user's account (requires JWT).
+
+(Note: Additional note-related endpoints would typically be described here if `noteRoutes.js` and `noteController.js` were implemented.)
