@@ -36,14 +36,42 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/AuthSuccessResponse'
  *       400:
- *         $ref: '#/components/responses/BadRequest'
+ *         description: Bad request (e.g., missing fields, invalid format).
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             examples:
+ *               InvalidUsername:
+ *                 summary: Invalid Username Format
+ *                 value:
+ *                   status: "fail"
+ *                   message: "Username must be at least 3 characters long."
+ *               InvalidPassword:
+ *                 summary: Invalid Password Format
+ *                 value:
+ *                   status: "fail"
+ *                   message: "Password must be at least 6 characters long."
+ *               MissingCredentials:
+ *                 summary: Missing Username/Password
+ *                 value:
+ *                   status: "fail"
+ *                   message: "Username and password are required."
  *       409:
- *         $ref: '#/components/responses/Conflict'
+ *         description: Conflict (e.g., username already exists).
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             examples:
+ *               UsernameExists:
+ *                 summary: Username Already Exists
+ *                 value:
+ *                   status: "fail"
+ *                   message: "Username already exists."
  *       500:
  *         $ref: '#/components/responses/InternalServerError'
  */
-// Route for user signup. When a POST request is made to /user/signup,
-// the `signup` function from `userController.js` is executed to handle the registration logic.
 router.post("/signup", signup);
 
 /**
@@ -67,14 +95,32 @@ router.post("/signup", signup);
  *             schema:
  *               $ref: '#/components/schemas/AuthSuccessResponse'
  *       400:
- *         $ref: '#/components/responses/BadRequest'
+ *         description: Bad request (e.g., missing fields).
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             examples:
+ *               MissingCredentials:
+ *                 summary: Missing Username/Password
+ *                 value:
+ *                   status: "fail"
+ *                   message: "Username and password are required."
  *       401:
- *         $ref: '#/components/responses/Unauthorized'
+ *         description: Unauthorized (e.g., invalid credentials).
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             examples:
+ *               InvalidCredentials:
+ *                 summary: Invalid Username or Password
+ *                 value:
+ *                   status: "fail"
+ *                   message: "Invalid credentials."
  *       500:
  *         $ref: '#/components/responses/InternalServerError'
  */
-// Route for user login. When a POST request is made to /user/login,
-// the `login` function from `userController.js` is executed to handle the authentication logic.
 router.post("/login", login);
 
 /**
@@ -90,15 +136,42 @@ router.post("/login", login);
  *       204:
  *         description: User account successfully deleted. No content.
  *       401:
- *         $ref: '#/components/responses/Unauthorized'
+ *         description: Unauthorized.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             examples:
+ *               NoToken:
+ *                 summary: Missing Token
+ *                 value:
+ *                   status: "fail"
+ *                   message: "You are not logged in! Please log in to get access."
+ *               InvalidToken:
+ *                 summary: Invalid Token
+ *                 value:
+ *                   status: "fail"
+ *                   message: "Invalid token. Please log in again."
+ *               ExpiredToken:
+ *                 summary: Expired Token
+ *                 value:
+ *                   status: "fail"
+ *                   message: "Your token has expired! Please log in again."
  *       404:
- *         $ref: '#/components/responses/NotFound'
+ *         description: User not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             examples:
+ *               UserNotFound:
+ *                 summary: User Not Found
+ *                 value:
+ *                   status: "fail"
+ *                   message: "User not found or could not be deleted."
  *       500:
  *         $ref: '#/components/responses/InternalServerError'
  */
-// Route for deleting the current user's account. When a DELETE request is made to /user/delete,
-// `authMiddleware` is first executed to verify the JWT, and if successful,
-// `deleteCurrentUser` from `userController.js` handles the account deletion.
 router.delete("/delete", authMiddleware, deleteCurrentUser);
 
 export default router;

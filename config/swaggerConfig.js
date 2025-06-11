@@ -2,7 +2,6 @@ import swaggerJsdoc from "swagger-jsdoc";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 
-// Helper to get __dirname in ES Modules context.
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -22,7 +21,7 @@ const options = {
       },
     ],
     components: {
-      securitySchemes: {
+      securityScheemes: {
         bearerAuth: {
           type: "http",
           scheme: "bearer",
@@ -32,25 +31,24 @@ const options = {
         },
       },
       schemas: {
-        // Define a central ErrorResponse schema for consistent error representation.
         ErrorResponse: {
           type: "object",
           properties: {
             status: {
               type: "string",
               description: "Status of the operation (e.g., 'fail', 'error').",
-              example: "fail",
             },
             message: {
               type: "string",
               description: "Descriptive error message.",
-              example:
-                "Validation failed: Username must be at least 3 characters long.",
             },
+          },
+          example: {
+            status: "fail",
+            message: "An error occurred.",
           },
         },
       },
-      // Define common API responses that can be reused across different endpoints.
       responses: {
         BadRequest: {
           description: "Bad request (e.g., missing fields, invalid format).",
@@ -58,6 +56,10 @@ const options = {
             "application/json": {
               schema: {
                 $ref: "#/components/schemas/ErrorResponse",
+              },
+              example: {
+                status: "fail",
+                message: "Title cannot be empty, text cannot be empty.",
               },
             },
           },
@@ -69,6 +71,10 @@ const options = {
               schema: {
                 $ref: "#/components/schemas/ErrorResponse",
               },
+              example: {
+                status: "fail",
+                message: "Username already exists.",
+              },
             },
           },
         },
@@ -78,6 +84,10 @@ const options = {
             "application/json": {
               schema: {
                 $ref: "#/components/schemas/ErrorResponse",
+              },
+              example: {
+                status: "fail",
+                message: "You are not logged in! Please log in to get access.",
               },
             },
           },
@@ -89,6 +99,10 @@ const options = {
               schema: {
                 $ref: "#/components/schemas/ErrorResponse",
               },
+              example: {
+                status: "fail",
+                message: "You do not have permission to access this resource.",
+              },
             },
           },
         },
@@ -98,6 +112,11 @@ const options = {
             "application/json": {
               schema: {
                 $ref: "#/components/schemas/ErrorResponse",
+              },
+              example: {
+                status: "fail",
+                message:
+                  "Note not found or you do not have permission to access it.",
               },
             },
           },
@@ -109,16 +128,19 @@ const options = {
               schema: {
                 $ref: "#/components/schemas/ErrorResponse",
               },
+              example: {
+                status: "error",
+                message: "Something went wrong on the server.",
+              },
             },
           },
         },
       },
     },
   },
-  // Specify API files to include for JSDoc-based Swagger documentation.
   apis: [
-    join(__dirname, "../routes/*.js"), // Include all route files.
-    join(__dirname, "../controllers/*.js"), // Include all controller files.
+    join(__dirname, "../routes/*.js"),
+    join(__dirname, "../controllers/*.js"),
   ],
 };
 

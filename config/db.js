@@ -15,15 +15,4 @@ const pool = new Pool({
   },
 });
 
-//Test for connection - remove later
-export const connectDB = async () => {
-  try {
-    await pool.query("SELECT 1");
-    console.log("PostgreSQL database connected successfully!");
-  } catch (err) {
-    console.error("PostgreSQL database connection FAILED:", err.message);
-    process.exit(1);
-  }
-};
-
 export { pool };

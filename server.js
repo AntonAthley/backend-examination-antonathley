@@ -1,8 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { connectDB } from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
+import noteRoutes from "./routes/noteRoutes.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swaggerConfig.js";
@@ -21,10 +21,9 @@ app.use(express.json());
 // Middleware to enable Cross-Origin Resource Sharing (CORS).
 app.use(cors());
 
-connectDB(); //TEST - remove later
-
 // Routes
 app.use("/api/user", userRoutes);
+app.use("/api/notes", noteRoutes);
 
 // Serve Swagger API documentation.
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

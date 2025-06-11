@@ -1,9 +1,7 @@
-import dotenv from "dotenv";
-
-// Load environment variables from .env file.
-dotenv.config();
-
-// Configuration object for JSON Web Token (JWT) settings.
+if (!process.env.JWT_SECRET) {
+  console.error("FATAL ERROR: JWT_SECRET is not defined in .env");
+  process.exit(1);
+}
 
 export const jwtConfig = {
   secret: process.env.JWT_SECRET,
