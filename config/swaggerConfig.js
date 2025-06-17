@@ -21,7 +21,7 @@ const options = {
       },
     ],
     components: {
-      securityScheemes: {
+      securitySchemes: {
         bearerAuth: {
           type: "http",
           scheme: "bearer",
@@ -137,6 +137,11 @@ const options = {
         },
       },
     },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
   apis: [
     join(__dirname, "../routes/*.js"),
